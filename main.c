@@ -9,6 +9,8 @@
 int readInput(char *fileName, struct assemblerInput *opInputs, struct index *indexs)
 {
     int nbLine = 0;
+    int nbIntruction = 0;
+    int nbIndex = 0;
     FILE *myfile = fopen(fileName, "r");
     if (myfile == NULL)
     {
@@ -35,10 +37,14 @@ int readInput(char *fileName, struct assemblerInput *opInputs, struct index *ind
             if(strstr(opp, ":") )
             {
                 //index
+                printf("indexe %s find at %d\n", opp);
+                strcpy(indexs[nbIndex].name, opp);
+                indexs[nbIndex].position = nbLine;
+                nbIndex++;
             } else {
                 //operateur
-                strcpy(opInputs[i].opp, opp);
-                printf("op %s\n", opInputs[i].opp);
+                strcpy(opInputs[nbIntruction].opp, opp);
+                printf("op %s\n", opInputs[nbIntruction].opp);
 
                 //récupération des paramètres
                 char delim[] = ",";
@@ -46,26 +52,28 @@ int readInput(char *fileName, struct assemblerInput *opInputs, struct index *ind
 
                 if (ptr != NULL)
                 {
-                    strcpy(opInputs[i].p1, ptr);
+                    strcpy(opInputs[nbIntruction].p1, ptr);
                     ptr = strtok(NULL, delim);
                 }
                 if (ptr != NULL)
                 {
-                    strcpy(opInputs[i].p2, ptr);
+                    strcpy(opInputs[nbIntruction].p2, ptr);
                     ptr = strtok(NULL, delim);
                 }
                 if (ptr != NULL)
                 {
-                    strcpy(opInputs[i].p3, ptr);
+                    strcpy(opInputs[nbIntruction].p3, ptr);
                 }
-                printf("p1 %s\n", opInputs[i].p1);
-                printf("p2 %s\n", opInputs[i].p2);
-                printf("p3 %s\n", opInputs[i].p3);
+                printf("p1 %s\n", opInputs[nbIntruction].p1);
+                printf("p2 %s\n", opInputs[nbIntruction].p2);
+                printf("p3 %s\n", opInputs[nbIntruction].p3);
+                nbIntruction++;
             }
         }
+        indexs[nbIndex+1].position = -1;  // indicateur de fin de tableau
         printf("Nombre d'instruction dans le fichier : %d\n", nbLine);
     }
-    return nbLine;
+    return nbIntruction;
 }
 
 int writeResults(char *fileName, struct assemblerInput *opInputs, int nbLine){
@@ -213,200 +221,7 @@ int binaryToHex(char inStr[], struct assemblerInput opInput) {
 }
 
 
-//TODO JAL
-
-
-//TODO LW
-
-
-/*
-
-int nop(struct assemblerInput opInput, char res[]
-   char special[100] = "000000";
-   char zero1[100] = "00000"
-   char zero2[100] = "00000"
-   char zero3[100] = "00000"
-   char zero4[100] = "00000"
-
-   strcat(res, special);
-   strcat(res, zero1);
-   strcat(res, zero2);
-   strcat(res, zero3);
-   strcat(res, zero4);
-   strcat(res, opcode);
-
-   return binaryToHex(res, opInput);
-}
-
-int sll(struct assemblerInput opInput, char res[])
-   char p1[100];
-   char p2[100];
-   char p3[100];
-
-   conversionDecimalBinaire(opInput.p1, p1, 5);
-   printf("p1 : %s\n",p1);
-   conversionDecimalBinaire(opInput.p2, p2, 5);
-   printf("p2 : %s\n",p2);
-   conversionDecimalBinaire(opInput.p3, p3, 16);
-   printf("p3 : %s\n",p3);
-   strcat(res, opcode);
-   strcat(res, p2);
-   strcat(res, p1);
-   strcat(res, p3);
-   return binaryToHex(res, opInput);
-}
-
-int rotr(struct assemblerInput opInput, char res[])
-{
-   char special[100] = "000000";
-   char zero[100] = "0000";
-   char p1[100];
-   char p2[100];
-   char p3[100];
-   conversionDecimalBinaire(opInput.p1, p1, 5);
-   printf("p1 : %s\n",p1);
-   conversionDecimalBinaire(opInput.p2, p2, 5);
-   printf("p2 : %s\n",p2);
-   conversionDecimalBinaire(opInput.p3, p3, 5);
-   printf("p3 : %s\n",p3);
-   strcat(res, special);
-   strcat(res, zero);
-   strcat(res, p2);
-   strcat(res, p1);
-   strcat(res, p3);
-   strcat(res, opcode);
-   return binaryToHex(res, opInput);
-}
-
-int srl(struct assemblerInput opInput, char res[])
-{
-   char opcode[100] = "101010";
-   char p1[100];
-   char p2[100];
-   char p3[100];
-
-   conversionDecimalBinaire(opInput.p1, p1, 5);
-   printf("p1 : %s\n",p1);
-   conversionDecimalBinaire(opInput.p2, p2, 5);
-   printf("p2 : %s\n",p2);
-   conversionDecimalBinaire(opInput.p3, p3, 16);
-   printf("p3 : %s\n",p3);
-   strcat(res, opcode);
-   strcat(res, p2);
-   strcat(res, p1);
-   strcat(res, p3);
-   return binaryToHex(res, opInput);
-}
-
-int slt(struct assemblerInput opInput, char res[])
-{
-   char opcode[100] = "101011";
-   char special[100] = "000000";
-   char zero[100] = "00000"
-   char p1[100];
-   char p2[100];
-   char p3[100];
-   conversionDecimalBinaire(opInput.p1, p1, 5);
-   printf("p1 : %s\n",p1);
-   conversionDecimalBinaire(opInput.p2, p2, 5);
-   printf("p2 : %s\n",p2);
-   conversionDecimalBinaire(opInput.p3, p3, 5);
-   printf("p3 : %s\n",p3);
-   strcat(res, special);
-   strcat(res, p2);
-   strcat(res, p3);
-   strcat(res, p1);
-   strcat(res, zero);
-   strcat(res, opcode);
-   return binaryToHex(res, opInput);
-}
-
-int sw(struct assemblerInput opInput, char res[])
-{
-   char special[100] = "000000";
-   char zero[100] = "00000";
-   char opcode[100] = "101011";
-   char p1[100];
-   char p2[100];
-   char p3[100];
-   conversionDecimalBinaire(opInput.p1, p1, 5);
-   printf("p1 : %s\n",p1);
-   conversionDecimalBinaire(opInput.p2, p2, 5);
-   printf("p2 : %s\n",p2);
-   conversionDecimalBinaire(opInput.p3, p3, 16);
-   printf("p3 : %s\n",p3);
-   strcat(res, opcode);
-   strcat(res, p2);
-   strcat(res, p1);
-   strcat(res, p3);
-   return binaryToHex(res, opInput);
-}
-
-int sub(struct assemblerInput opInput, char res[])
-{
-   char special[100] = "000000";
-   char zero[100] = "00000";
-   char opcode[100] = "100010";
-   char p1[100];
-   char p2[100];
-   char p3[100];
-
-   conversionDecimalBinaire(opInput.p1, p1, 5);
-   printf("p1 : %s\n",p1);
-   conversionDecimalBinaire(opInput.p2, p2, 5);
-   printf("p2 : %s\n",p2);
-   conversionDecimalBinaire(opInput.p3, p3, 5);
-   printf("p3 : %s\n",p3);
-   strcat(res, special);
-   strcat(res, p2);
-   strcat(res, p3);
-   strcat(res, p1);
-   strcat(res, zero);
-   strcat(res, opcode);
-   return binaryToHex(res, opInput);
-}
-
-int xor(struct assemblerInput opInput, char res[])
-{
-   char opcode[100] = "100110 ";
-   char p1[100];
-   char p2[100];
-   char p3[100];
-
-   conversionDecimalBinaire(opInput.p1, p1, 5);
-   printf("p1 : %s\n",p1);
-   conversionDecimalBinaire(opInput.p2, p2, 5);
-   printf("p2 : %s\n",p2);
-   conversionDecimalBinaire(opInput.p3, p3, 16);
-   printf("p3 : %s\n",p3);
-   strcat(res, opcode);
-   strcat(res, p2);
-   strcat(res, p1);
-   strcat(res, p3);
-   return binaryToHex(res, opInput);
-}
-
-int syscall(struct assemblerInput opInput, char res[])
-{
-   char opcode[100] = "001100"; //TODO A voir paramètres spéciaux
-   char p1[100];
-   char p2[100];
-   char p3[100];
-
-   conversionDecimalBinaire(opInput.p1, p1, 5);
-   printf("p1 : %s\n",p1);
-   conversionDecimalBinaire(opInput.p2, p2, 5);
-   printf("p2 : %s\n",p2);
-   conversionDecimalBinaire(opInput.p3, p3, 16);
-   printf("p3 : %s\n",p3);
-   strcat(res, opcode);
-   strcat(res, p2);
-   strcat(res, p1);
-   strcat(res, p3);
-   return binaryToHex(res, opInput);
-}
-*/
-int hexaTranslat(struct assemblerInput *opInputs, int count)
+int hexaTranslat(struct assemblerInput *opInputs, int count, struct index *indexs)
 {
     for (int i = 0; i < count; i++)
     {
@@ -476,7 +291,7 @@ int hexaTranslat(struct assemblerInput *opInputs, int count)
         else if (strcmp(opInputs[i].opp, "JAL") == 0)
         {
             char res[100] = "";
-            jal(opInputs[i], res);
+            jal(opInputs[i], res, indexs);
             opInputs[i].hexa = res;
         }
 
@@ -625,7 +440,7 @@ int main(int argc, char *argv[])
     struct assemblerInput opInputs[MAX_INPUT];
     struct index indexs[MAX_INDEX];
     int nbLine = readInput(argv[1], opInputs, indexs);
-    hexaTranslat(opInputs, nbLine);
+    hexaTranslat(opInputs, nbLine, indexs);
     writeResults(argv[2], opInputs, nbLine);
     return 0;
 }
