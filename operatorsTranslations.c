@@ -352,24 +352,15 @@ int or(struct assemblerInput opInput, char res[])
    return binaryToHex(res, opInput);
 }
 
-/*
-int nop(struct assemblerInput opInput, char res[]){
-   char special[100] = "000000";
-   char zero1[100] = "00000";
-   char zero2[100] = "00000";
-   char zero3[100] = "00000";
-   char zero4[100] = "00000";
 
-   strcat(res, special);
-   strcat(res, zero1);
-   strcat(res, zero2);
-   strcat(res, zero3);
-   strcat(res, zero4);
+int nop(struct assemblerInput opInput, char res[]){
+   char opcode[100] = "00000000000000000000000000000000";
    strcat(res, opcode);
 
    return binaryToHex(res, opInput);
 }
 
+/*
 int sll(struct assemblerInput opInput, char res[]){
    char p1[100];
    char p2[100];
