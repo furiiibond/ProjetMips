@@ -44,8 +44,9 @@ int readInput(char *fileName, struct assemblerInput *opInputs, struct index *ind
                 nbIndex++;
             } else {
                 //operateur
-                fscanf(myfile, "%s\n", &currentsParams);
-
+                if (strcmp(opp, "NOP") != 0 && strcmp(opp, "SYSCALL") != 0) {  // ici les opperateur à 0 opperandes
+                    fscanf(myfile, "%s\n", &currentsParams);
+                }
                 strcpy(opInputs[nbIntruction].opp, opp);
                 printf("op %s\n", opInputs[nbIntruction].opp);
 

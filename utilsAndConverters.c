@@ -6,6 +6,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "utilsAndConverters.h"
+#include <math.h>
 
 //int vers tab de char
 int nbDecimal(int value) {
@@ -61,6 +62,11 @@ int conversionDecimalBinaireInt(int valeur, char res[], int nbBit) {
     int i = 0;
     int reste;
     int binaire = 0;
+    int neg = 0;
+    if (valeur < 0) {
+        neg = 1;
+        valeur = -valeur - 1;
+    }
     while (valeur > 0) {
         reste = valeur % 2;//calcul le reste
         tab[x] = reste + 48;
@@ -78,7 +84,18 @@ int conversionDecimalBinaireInt(int valeur, char res[], int nbBit) {
         j--;
     }
     res[x] = 0;
-    return binaire;
+    if (neg == 1) {
+        int k = 0;
+        while (k < nbBit) {
+            if (res[k] == '0') {
+                res[k] = '1';
+            } else {
+                res[k] = '0';
+            }
+            k++;
+        }
+    }
+    return neg;
 }
 
 int conversionDecimalBinaire(char parameter[], char *res, int nbBit) {
@@ -87,6 +104,24 @@ int conversionDecimalBinaire(char parameter[], char *res, int nbBit) {
     sscanf(parameter, "%d", &valeur);
     return conversionDecimalBinaireInt(valeur, res, nbBit);
 
+}
+
+int conversionDecimalBinaireMayBeNegative(char parameter[], char *res, int nbBit, char *nextOp) {
+    int valeur;
+    processingParameter(parameter);
+    sscanf(parameter, "%d", &valeur);
+    if (conversionDecimalBinaireInt(valeur, res, nbBit)) {
+        //nombre négatif on increment l'operande suivente
+        int nextOpValue = binaryToDec(nextOp);
+        int len = strlen(nextOp);
+        if (nextOpValue == 0) {
+            nextOpValue = (pow(2, len - 1) - 1);
+        } else {
+            nextOpValue--;
+        }
+        conversionDecimalBinaireInt(nextOpValue, nextOp, len);
+    }
+    return 0;
 }
 
 int decimalToHexa(char parameter[], char hexadecimalNumber[]) {
@@ -139,6 +174,20 @@ int binaryToHex(char inStr[], struct assemblerInput opInput) {
         a++;
     } while (*a);
     return num;
+}
+
+int binaryToDec(char *inStr) {
+    int i = strlen(inStr) - 1;
+    int p = 0;
+    int res = 0;
+    while (i != -1) {
+        if (inStr[i] == '1') {
+            res += pow(2, p);
+        }
+        i--;
+        p++;
+    }
+    return res;
 }
 
 int indirectWithDecline(char parameter[], char *offset, char *base) {

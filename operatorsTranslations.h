@@ -34,7 +34,7 @@ int bne(struct assemblerInput opInput, char res[]);
 
 int div(struct assemblerInput opInput, char res[]);
 
-int j(struct assemblerInput opInput, char res[]);
+int j(struct assemblerInput opInput, char res[], struct index *indexs);
 
 int jal(struct assemblerInput opInput, char res[], struct index *indexs);
 
@@ -68,7 +68,7 @@ int sub(struct assemblerInput opInput, char res[]);
 
 int xor(struct assemblerInput opInput, char res[]);
 
-int syscall(struct assemblerInput opInput, char res[]);
+//int syscall(struct assemblerInput opInput, char res[]);
 
 int hexaTranslat(struct assemblerInput *opInputs, int count, struct index *indexs);
 
