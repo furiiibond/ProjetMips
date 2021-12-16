@@ -64,9 +64,9 @@ int readInput(char *fileName, struct assemblerInput *opInputs, struct index *ind
                 if (ptr != NULL) {
                     strcpy(opInputs[nbIntruction].p3, ptr);
                 }
-                printf("p1 %s\n", opInputs[nbIntruction].p1);
-                printf("p2 %s\n", opInputs[nbIntruction].p2);
-                printf("p3 %s\n", opInputs[nbIntruction].p3);
+//                printf("p1 %s\n", opInputs[nbIntruction].p1);
+//                printf("p2 %s\n", opInputs[nbIntruction].p2);
+//                printf("p3 %s\n", opInputs[nbIntruction].p3);
                 nbIntruction++;
             }
         }

@@ -17,11 +17,8 @@ int add(struct assemblerInput opInput, char *res) {
     char p2[100];
     char p3[100];
     conversionDecimalBinaire(opInput.p1, p1, 5);
-    printf("p1 : %s\n",p1);
     conversionDecimalBinaire(opInput.p2, p2, 5);
-    printf("p2 : %s\n",p2);
     conversionDecimalBinaire(opInput.p3, p3, 5);
-    printf("p3 : %s\n",p3);
     strcat(res, special);
     strcat(res, p2);
     strcat(res, p3);
@@ -39,11 +36,10 @@ int addi(struct assemblerInput opInput, char res[])
     char p2[100];
     char p3[100];
     conversionDecimalBinaire(opInput.p1, p1, 5);
-    printf("p1 : %s\n",p1);
     conversionDecimalBinaire(opInput.p2, p2, 5);
-    printf("p2 : %s\n", p2);
+
     conversionDecimalBinaireMayBeNegative(opInput.p3, p3, 16, &p1);
-    printf("p3 : %s\n", p3);
+
     strcat(res, opcode);
     strcat(res, p2);
     strcat(res, p1);
@@ -60,11 +56,11 @@ int and(struct assemblerInput opInput, char res[]) {
     char p3[100];
 
     conversionDecimalBinaire(opInput.p1, p1, 5);
-    printf("p1 : %s\n", p1);
+
     conversionDecimalBinaire(opInput.p2, p2, 5);
-    printf("p2 : %s\n", p2);
+
     conversionDecimalBinaire(opInput.p3, p3, 5);
-    printf("p3 : %s\n", p3);
+
     strcat(res, special);
     strcat(res, p2);
     strcat(res, p3);
@@ -81,11 +77,11 @@ int beq(struct assemblerInput opInput, char res[]) {
     char p3[100];
 
     conversionDecimalBinaire(opInput.p1, p1, 5);
-    printf("p1 : %s\n", p1);
+
     conversionDecimalBinaire(opInput.p2, p2, 5);
-    printf("p2 : %s\n", p2);
+
     conversionDecimalBinaireMayBeNegative(opInput.p3, p3, 16, &p2);
-    printf("p3 : %s\n", p3);
+
     strcat(res, opcode);
     strcat(res, p1);
     strcat(res, p2);
@@ -100,9 +96,9 @@ int bgtz(struct assemblerInput opInput, char res[]) {
     char p2[100];
 
     conversionDecimalBinaire(opInput.p1, p1, 5);
-    printf("p1 : %s\n", p1);
+
     conversionDecimalBinaireMayBeNegative(opInput.p2, p2, 16, &zero);
-    printf("p2 : %s\n", p2);
+
     strcat(res, opcode);
     strcat(res, p1);
     strcat(res, zero);
@@ -117,9 +113,9 @@ int blez(struct assemblerInput opInput, char res[]) {
     char p2[100];
 
     conversionDecimalBinaire(opInput.p1, p1, 5);
-    printf("p1 : %s\n", p1);
+
     conversionDecimalBinaireMayBeNegative(opInput.p2, p2, 16, &zero);
-    printf("p2 : %s\n", p2);
+
     strcat(res, opcode);
     strcat(res, p1);
     strcat(res, zero);
@@ -134,11 +130,11 @@ int bne(struct assemblerInput opInput, char res[]) {
     char p3[100];
 
     conversionDecimalBinaire(opInput.p1, p1, 5);
-    printf("p1 : %s\n", p1);
+
     conversionDecimalBinaire(opInput.p2, p2, 5);
-    printf("p2 : %s\n", p2);
+
     conversionDecimalBinaireMayBeNegative(opInput.p3, p3, 16, &p2);
-    printf("p3 : %s\n", p3);
+
     strcat(res, opcode);
     strcat(res, p1);
     strcat(res, p2);
@@ -154,9 +150,9 @@ int div(struct assemblerInput opInput, char res[]) {
     char p2[100];
 
     conversionDecimalBinaire(opInput.p1, p1, 5);
-    printf("p1 : %s\n", p1);
+
     conversionDecimalBinaire(opInput.p2, p2, 5);
-    printf("p2 : %s\n", p2);
+
     strcat(res, special);
     strcat(res, p1);
     strcat(res, p2);
@@ -178,7 +174,7 @@ int j(struct assemblerInput opInput, char res[], struct index *indexs) {
         i++;
     }
 
-    printf("p1 : %s\n", p1);
+
     strcat(res, opcode);
     strcat(res, p1);
     return binaryToHex(res, opInput);
@@ -197,7 +193,7 @@ int jal(struct assemblerInput opInput, char res[], struct index *indexs) {
         i++;
     }
 
-    printf("p1 : %s\n", p1);
+
     strcat(res, opcode);
     strcat(res, p1);
     return binaryToHex(res, opInput);
@@ -211,7 +207,7 @@ int jr(struct assemblerInput opInput, char res[]) {
     char p1[100];
 
     conversionDecimalBinaire(opInput.p1, p1, 5);
-    printf("p1 : %s\n", p1);
+
     strcat(res, special);
     strcat(res, p1);
     strcat(res, zero);
@@ -228,9 +224,9 @@ int lui(struct assemblerInput opInput, char res[]) {
 
 
     conversionDecimalBinaire(opInput.p1, p1, 5);
-    printf("p1 : %s\n", p1);
+
     conversionDecimalBinaireMayBeNegative(opInput.p2, p2, 16, &p1);
-    printf("p2 : %s\n", p2);
+
 
     strcat(res, opcode);
     strcat(res, zero);
@@ -251,11 +247,11 @@ int lw(struct assemblerInput opInput, char res[]) {
     //Séparation du parametre 2 en indirect avec décalage
     indirectWithDecline(opInput.p2, offsetDecimal, baseDecimal);
     conversionDecimalBinaire(opInput.p1, p1, 5);
-    printf("p1 : %s\n", p1);
+
     conversionDecimalBinaireMayBeNegative(offsetDecimal, offset, 16, &p1);
-    printf("offset : %s\n", offset);
+
     conversionDecimalBinaire(baseDecimal, base, 5);
-    printf("base : %s\n", base);
+
     strcat(res, opcode);
     strcat(res, base);
     strcat(res, p1);
@@ -271,7 +267,7 @@ int mfhi(struct assemblerInput opInput, char res[]) {
     char p1[100];
 
     conversionDecimalBinaire(opInput.p1, p1, 5);
-    printf("p1 : %s\n", p1);
+
 
     strcat(res, special);
     strcat(res, zero1);
@@ -290,9 +286,9 @@ int mult(struct assemblerInput opInput, char res[]) {
     char p2[100];
     char zero[100] = "0000000000";
     conversionDecimalBinaire(opInput.p1, p1, 5);
-    printf("p1 : %s\n", p1);
+
     conversionDecimalBinaire(opInput.p2, p2, 5);
-    printf("p2 : %s\n", p2);
+
     strcat(res, special);
     strcat(res, p1);
     strcat(res, p2);
@@ -309,7 +305,7 @@ int mflo(struct assemblerInput opInput, char res[]) {
     char p1[100];
 
     conversionDecimalBinaire(opInput.p1, p1, 5);
-    printf("p1 : %s\n", p1);
+
     strcat(res, special);
     strcat(res, zero1);
     strcat(res, p1);
@@ -327,11 +323,11 @@ int or(struct assemblerInput opInput, char res[]) {
     char opcode[100] = "100101";
 
     conversionDecimalBinaire(opInput.p1, p1, 5);
-    printf("p1 : %s\n", p1);
+
     conversionDecimalBinaire(opInput.p2, p2, 5);
-    printf("p2 : %s\n", p2);
+
     conversionDecimalBinaire(opInput.p3, p3, 5);
-    printf("p3 : %s\n", p3);
+
     strcat(res, special);
     strcat(res, p2);
     strcat(res, p3);
@@ -360,11 +356,11 @@ int sll(struct assemblerInput opInput, char res[]) {
 
 
     conversionDecimalBinaire(opInput.p1, p1, 5);
-    printf("p1 : %s\n", p1);
+
     conversionDecimalBinaire(opInput.p2, p2, 5);
-    printf("p2 : %s\n", p2);
+
     conversionDecimalBinaireMayBeNegative(opInput.p3, p3, 5, &p1);
-    printf("p3 : %s\n", p3);
+
     strcat(res, special);
     strcat(res, zero);
     strcat(res, p2);
@@ -383,11 +379,11 @@ int rotr(struct assemblerInput opInput, char res[]) {
     char opcode[100] = "000010";
 
     conversionDecimalBinaire(opInput.p1, p1, 5);
-    printf("p1 : %s\n", p1);
+
     conversionDecimalBinaire(opInput.p2, p2, 5);
-    printf("p2 : %s\n", p2);
+
     conversionDecimalBinaireMayBeNegative(opInput.p3, p3, 5, &p1);
-    printf("p3 : %s\n", p3);
+
     strcat(res, special);
     strcat(res, zero);
     strcat(res, p2);
@@ -407,11 +403,11 @@ int srl(struct assemblerInput opInput, char res[]) {
     char p3[100];
 
     conversionDecimalBinaire(opInput.p1, p1, 5);
-    printf("p1 : %s\n", p1);
+
     conversionDecimalBinaire(opInput.p2, p2, 5);
-    printf("p2 : %s\n", p2);
+
     conversionDecimalBinaireMayBeNegative(opInput.p3, p3, 5, &p1);
-    printf("p3 : %s\n", p3);
+
     strcat(res, special);
     strcat(res, zero);
     strcat(res, rZero);
@@ -430,11 +426,11 @@ int slt(struct assemblerInput opInput, char res[]) {
     char p2[100];
     char p3[100];
     conversionDecimalBinaire(opInput.p1, p1, 5);
-    printf("p1 : %s\n", p1);
+
     conversionDecimalBinaire(opInput.p2, p2, 5);
-    printf("p2 : %s\n", p2);
+
     conversionDecimalBinaire(opInput.p3, p3, 5);
-    printf("p3 : %s\n", p3);
+
     strcat(res, special);
     strcat(res, p2);
     strcat(res, p3);
@@ -455,11 +451,11 @@ int sw(struct assemblerInput opInput, char res[]) {
     //Séparation du parametre 2 en indirect avec décalage
     indirectWithDecline(opInput.p2, offsetDecimal, baseDecimal);
     conversionDecimalBinaire(opInput.p1, p1, 5);
-    printf("p1 : %s\n", p1);
+
     conversionDecimalBinaire(baseDecimal, base, 5);
-    printf("base : %s\n", base);
+
     conversionDecimalBinaireMayBeNegative(offsetDecimal, offset, 16, &p1);
-    printf("offset : %s\n", offset);
+
     strcat(res, opcode);
     strcat(res, base);
     strcat(res, p1);
@@ -476,11 +472,11 @@ int sub(struct assemblerInput opInput, char res[]) {
     char p3[100];
 
     conversionDecimalBinaire(opInput.p1, p1, 5);
-    printf("p1 : %s\n", p1);
+
     conversionDecimalBinaire(opInput.p2, p2, 5);
-    printf("p2 : %s\n", p2);
+
     conversionDecimalBinaire(opInput.p3, p3, 5);
-    printf("p3 : %s\n", p3);
+
     strcat(res, special);
     strcat(res, p2);
     strcat(res, p3);
@@ -499,11 +495,11 @@ int xor(struct assemblerInput opInput, char res[]) {
     char p3[100];
 
     conversionDecimalBinaire(opInput.p1, p1, 5);
-    printf("p1 : %s\n", p1);
+
     conversionDecimalBinaire(opInput.p2, p2, 5);
-    printf("p2 : %s\n", p2);
+
     conversionDecimalBinaire(opInput.p3, p3, 5);
-    printf("p3 : %s\n", p3);
+
     strcat(res, special);
     strcat(res, p2);
     strcat(res, p3);
@@ -522,11 +518,9 @@ int xor(struct assemblerInput opInput, char res[]) {
 //   char p3[100];
 //
 //   conversionDecimalBinaire(opInput.p1, p1, 5);
-//   printf("p1 : %s\n",p1);
+//   
 //   conversionDecimalBinaire(opInput.p2, p2, 5);
-//   printf("p2 : %s\n",p2);
 //   conversionDecimalBinaire(opInput.p3, p3, 16);
-//   printf("p3 : %s\n",p3);
 //   strcat(res, opcode);
 //   strcat(res, p2);
 //   strcat(res, p1);

@@ -47,7 +47,6 @@ void intVersChaine(int num, char chaine[], int nbBit) {
 int processingParameter(char parameter[]) {
     //traitement du parametre
     int count = strlen(parameter);
-    printf("%s\n", parameter);
     if (parameter[0] == '$') {
         for (int i = 0; i < count; i++) {
             parameter[i] = parameter[i + 1];
@@ -127,7 +126,6 @@ int conversionDecimalBinaireMayBeNegative(char parameter[], char *res, int nbBit
 int decimalToHexa(char parameter[], char hexadecimalNumber[]) {
     long int decimalNumber, quotient;
     int i = 0, temp;
-    printf("%s\n", parameter);
     sscanf(parameter, "%ld", &decimalNumber);
     quotient = decimalNumber;
     if (quotient == 0) {
