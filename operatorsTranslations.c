@@ -210,37 +210,34 @@ int jr(struct assemblerInput opInput, char res[]) {
     char hint[100] = "00000";   // release 1 of architecture
     char p1[100];
 
-   conversionDecimalBinaire(opInput.p1, p1, 5);
-   printf("p1 : %s\n",p1);
-   conversionDecimalBinaire(opInput.p2, p2, 5);
-   printf("p2 : %s\n",p2);
-   conversionDecimalBinaire(opInput.p3, p3, 16);
-   printf("p3 : %s\n",p3);
-   strcat(res, opcode);
-   strcat(res, p2);
-   strcat(res, p1);
-   strcat(res, p3);
-   return binaryToHex(res, opInput);
+    conversionDecimalBinaire(opInput.p1, p1, 5);
+    printf("p1 : %s\n", p1);
+    strcat(res, special);
+    strcat(res, p1);
+    strcat(res, zero);
+    strcat(res, hint);
+    strcat(res, opcode);
+    return binaryToHex(res, opInput);
 }
 
-int lui(struct assemblerInput opInput, char res[])
-{
-   char opcode[100] = "001111";
-   char p1[100];
-   char p2[100];
-   char p3[100];
+int lui(struct assemblerInput opInput, char res[]) {
+    char opcode[100] = "001111";
+    char zero[100] = "00000";
+    char p1[100];
+    char p2[100];
 
-   conversionDecimalBinaire(opInput.p1, p1, 5);
-   printf("p1 : %s\n",p1);
-   conversionDecimalBinaire(opInput.p2, p2, 5);
-   printf("p2 : %s\n",p2);
-   conversionDecimalBinaire(opInput.p3, p3, 16);
-   printf("p3 : %s\n",p3);
-   strcat(res, opcode);
-   strcat(res, p2);
-   strcat(res, p1);
-   strcat(res, p3);
-   return binaryToHex(res, opInput);
+
+    conversionDecimalBinaire(opInput.p1, p1, 5);
+    printf("p1 : %s\n", p1);
+    conversionDecimalBinaireMayBeNegative(opInput.p2, p2, 16, &p1);
+    printf("p2 : %s\n", p2);
+
+    strcat(res, opcode);
+    strcat(res, zero);
+    strcat(res, p1);
+    strcat(res, p2);
+
+    return binaryToHex(res, opInput);
 }
 
 int lw(struct assemblerInput opInput, char res[]) {
@@ -266,24 +263,24 @@ int lw(struct assemblerInput opInput, char res[]) {
     return binaryToHex(res, opInput);
 }
 
-int mfhi(struct assemblerInput opInput, char res[])
-{
-   char opcode[100] = "010000";
-   char p1[100];
-   char p2[100];
-   char p3[100];
+int mfhi(struct assemblerInput opInput, char res[]) {
+    char special[100] = "000000";
+    char zero1[100] = "0000000000";
+    char zero2[100] = "00000";
+    char opcode[100] = "010000";
+    char p1[100];
 
-   conversionDecimalBinaire(opInput.p1, p1, 5);
-   printf("p1 : %s\n",p1);
-   conversionDecimalBinaire(opInput.p2, p2, 5);
-   printf("p2 : %s\n",p2);
-   conversionDecimalBinaire(opInput.p3, p3, 16);
-   printf("p3 : %s\n",p3);
-   strcat(res, opcode);
-   strcat(res, p2);
-   strcat(res, p1);
-   strcat(res, p3);
-   return binaryToHex(res, opInput);
+    conversionDecimalBinaire(opInput.p1, p1, 5);
+    printf("p1 : %s\n", p1);
+
+    strcat(res, special);
+    strcat(res, zero1);
+    strcat(res, p1);
+    strcat(res, zero2);
+    strcat(res, opcode);
+
+
+    return binaryToHex(res, opInput);
 }
 
 int mult(struct assemblerInput opInput, char res[]) {
@@ -321,24 +318,27 @@ int mflo(struct assemblerInput opInput, char res[]) {
     return binaryToHex(res, opInput);
 }
 
-int or(struct assemblerInput opInput, char res[])
-{
-   char opcode[100] = "100101";
-   char p1[100];
-   char p2[100];
-   char p3[100];
+int or(struct assemblerInput opInput, char res[]) {
+    char special[100] = "000000";
+    char p1[100];
+    char p2[100];
+    char p3[100];
+    char zero[100] = "00000";
+    char opcode[100] = "100101";
 
-   conversionDecimalBinaire(opInput.p1, p1, 5);
-   printf("p1 : %s\n",p1);
-   conversionDecimalBinaire(opInput.p2, p2, 5);
-   printf("p2 : %s\n",p2);
-   conversionDecimalBinaire(opInput.p3, p3, 16);
-   printf("p3 : %s\n",p3);
-   strcat(res, opcode);
-   strcat(res, p2);
-   strcat(res, p1);
-   strcat(res, p3);
-   return binaryToHex(res, opInput);
+    conversionDecimalBinaire(opInput.p1, p1, 5);
+    printf("p1 : %s\n", p1);
+    conversionDecimalBinaire(opInput.p2, p2, 5);
+    printf("p2 : %s\n", p2);
+    conversionDecimalBinaire(opInput.p3, p3, 5);
+    printf("p3 : %s\n", p3);
+    strcat(res, special);
+    strcat(res, p2);
+    strcat(res, p3);
+    strcat(res, p1);
+    strcat(res, zero);
+    strcat(res, opcode);
+    return binaryToHex(res, opInput);
 }
 
 
@@ -349,88 +349,99 @@ int nop(struct assemblerInput opInput, char res[]) {
     return binaryToHex(res, opInput);
 }
 
-/*
-int sll(struct assemblerInput opInput, char res[]){
-   char p1[100];
-   char p2[100];
-   char p3[100];
 
-   conversionDecimalBinaire(opInput.p1, p1, 5);
-   printf("p1 : %s\n",p1);
-   conversionDecimalBinaire(opInput.p2, p2, 5);
-   printf("p2 : %s\n",p2);
-   conversionDecimalBinaire(opInput.p3, p3, 16);
-   printf("p3 : %s\n",p3);
-   strcat(res, opcode);
-   strcat(res, p2);
-   strcat(res, p1);
-   strcat(res, p3);
-   return binaryToHex(res, opInput);
+int sll(struct assemblerInput opInput, char res[]) {
+    char special[100] = "000000";
+    char zero[100] = "00000";
+    char p1[100];
+    char p2[100];
+    char p3[100];
+    char opcode[100] = "000000";
+
+
+    conversionDecimalBinaire(opInput.p1, p1, 5);
+    printf("p1 : %s\n", p1);
+    conversionDecimalBinaire(opInput.p2, p2, 5);
+    printf("p2 : %s\n", p2);
+    conversionDecimalBinaireMayBeNegative(opInput.p3, p3, 5, &p1);
+    printf("p3 : %s\n", p3);
+    strcat(res, special);
+    strcat(res, zero);
+    strcat(res, p2);
+    strcat(res, p1);
+    strcat(res, p3);
+    strcat(res, opcode);
+    return binaryToHex(res, opInput);
 }
 
-int rotr(struct assemblerInput opInput, char res[])
-{
-   char special[100] = "000000";
-   char zero[100] = "0000";
-   char p1[100];
-   char p2[100];
-   char p3[100];
-   conversionDecimalBinaire(opInput.p1, p1, 5);
-   printf("p1 : %s\n",p1);
-   conversionDecimalBinaire(opInput.p2, p2, 5);
-   printf("p2 : %s\n",p2);
-   conversionDecimalBinaire(opInput.p3, p3, 5);
-   printf("p3 : %s\n",p3);
-   strcat(res, special);
-   strcat(res, zero);
-   strcat(res, p2);
-   strcat(res, p1);
-   strcat(res, p3);
-   strcat(res, opcode);
-   return binaryToHex(res, opInput);
+int rotr(struct assemblerInput opInput, char res[]) {
+    char special[100] = "000000";
+    char zero[100] = "0000";
+    char p1[100];
+    char p2[100];
+    char p3[100];
+    char opcode[100] = "000010";
+
+    conversionDecimalBinaire(opInput.p1, p1, 5);
+    printf("p1 : %s\n", p1);
+    conversionDecimalBinaire(opInput.p2, p2, 5);
+    printf("p2 : %s\n", p2);
+    conversionDecimalBinaireMayBeNegative(opInput.p3, p3, 5, &p1);
+    printf("p3 : %s\n", p3);
+    strcat(res, special);
+    strcat(res, zero);
+    strcat(res, p2);
+    strcat(res, p1);
+    strcat(res, p3);
+    strcat(res, opcode);
+    return binaryToHex(res, opInput);
 }
 
-int srl(struct assemblerInput opInput, char res[])
-{
-   char opcode[100] = "101010";
-   char p1[100];
-   char p2[100];
-   char p3[100];
+int srl(struct assemblerInput opInput, char res[]) {
+    char special[100] = "000000";
+    char zero[100] = "0000";
+    char opcode[100] = "000010";
+    char rZero[100] = "0";
+    char p1[100];
+    char p2[100];
+    char p3[100];
 
-   conversionDecimalBinaire(opInput.p1, p1, 5);
-   printf("p1 : %s\n",p1);
-   conversionDecimalBinaire(opInput.p2, p2, 5);
-   printf("p2 : %s\n",p2);
-   conversionDecimalBinaire(opInput.p3, p3, 16);
-   printf("p3 : %s\n",p3);
-   strcat(res, opcode);
-   strcat(res, p2);
-   strcat(res, p1);
-   strcat(res, p3);
-   return binaryToHex(res, opInput);
+    conversionDecimalBinaire(opInput.p1, p1, 5);
+    printf("p1 : %s\n", p1);
+    conversionDecimalBinaire(opInput.p2, p2, 5);
+    printf("p2 : %s\n", p2);
+    conversionDecimalBinaireMayBeNegative(opInput.p3, p3, 5, &p1);
+    printf("p3 : %s\n", p3);
+    strcat(res, special);
+    strcat(res, zero);
+    strcat(res, rZero);
+    strcat(res, p2);
+    strcat(res, p1);
+    strcat(res, p3);
+    strcat(res, opcode);
+    return binaryToHex(res, opInput);
 }
 
-int slt(struct assemblerInput opInput, char res[])
-{
-   char opcode[100] = "101011";
-   char special[100] = "000000";
-   char zero[100] = "00000"
-   char p1[100];
-   char p2[100];
-   char p3[100];
-   conversionDecimalBinaire(opInput.p1, p1, 5);
-   printf("p1 : %s\n",p1);
-   conversionDecimalBinaire(opInput.p2, p2, 5);
-   printf("p2 : %s\n",p2);
-   conversionDecimalBinaire(opInput.p3, p3, 5);
-   printf("p3 : %s\n",p3);
-   strcat(res, special);
-   strcat(res, p2);
-   strcat(res, p3);
-   strcat(res, p1);
-   strcat(res, zero);
-   strcat(res, opcode);
-   return binaryToHex(res, opInput);
+int slt(struct assemblerInput opInput, char res[]) {
+    char opcode[100] = "101010";
+    char special[100] = "000000";
+    char zero[100] = "00000";
+    char p1[100];
+    char p2[100];
+    char p3[100];
+    conversionDecimalBinaire(opInput.p1, p1, 5);
+    printf("p1 : %s\n", p1);
+    conversionDecimalBinaire(opInput.p2, p2, 5);
+    printf("p2 : %s\n", p2);
+    conversionDecimalBinaire(opInput.p3, p3, 5);
+    printf("p3 : %s\n", p3);
+    strcat(res, special);
+    strcat(res, p2);
+    strcat(res, p3);
+    strcat(res, p1);
+    strcat(res, zero);
+    strcat(res, opcode);
+    return binaryToHex(res, opInput);
 }
 
 int sw(struct assemblerInput opInput, char res[]) {
@@ -479,46 +490,50 @@ int sub(struct assemblerInput opInput, char res[]) {
     return binaryToHex(res, opInput);
 }
 
-int xor(struct assemblerInput opInput, char res[])
-{
-   char opcode[100] = "100110 ";
-   char p1[100];
-   char p2[100];
-   char p3[100];
+int xor(struct assemblerInput opInput, char res[]) {
+    char special[100] = "000000";
+    char opcode[100] = "100110 ";
+    char zero[100] = "00000";
+    char p1[100];
+    char p2[100];
+    char p3[100];
 
-   conversionDecimalBinaire(opInput.p1, p1, 5);
-   printf("p1 : %s\n",p1);
-   conversionDecimalBinaire(opInput.p2, p2, 5);
-   printf("p2 : %s\n",p2);
-   conversionDecimalBinaire(opInput.p3, p3, 16);
-   printf("p3 : %s\n",p3);
-   strcat(res, opcode);
-   strcat(res, p2);
-   strcat(res, p1);
-   strcat(res, p3);
-   return binaryToHex(res, opInput);
+    conversionDecimalBinaire(opInput.p1, p1, 5);
+    printf("p1 : %s\n", p1);
+    conversionDecimalBinaire(opInput.p2, p2, 5);
+    printf("p2 : %s\n", p2);
+    conversionDecimalBinaire(opInput.p3, p3, 5);
+    printf("p3 : %s\n", p3);
+    strcat(res, special);
+    strcat(res, p2);
+    strcat(res, p3);
+    strcat(res, p1);
+    strcat(res, zero);
+
+    strcat(res, opcode);
+    return binaryToHex(res, opInput);
 }
 
-int syscall(struct assemblerInput opInput, char res[])
-{
-   char opcode[100] = "001100"; //TODO A voir paramètres spéciaux
-   char p1[100];
-   char p2[100];
-   char p3[100];
+//int syscall(struct assemblerInput opInput, char res[])
+//{
+//   char opcode[100] = "001100"; //TODO A voir paramètres spéciaux
+//   char p1[100];
+//   char p2[100];
+//   char p3[100];
+//
+//   conversionDecimalBinaire(opInput.p1, p1, 5);
+//   printf("p1 : %s\n",p1);
+//   conversionDecimalBinaire(opInput.p2, p2, 5);
+//   printf("p2 : %s\n",p2);
+//   conversionDecimalBinaire(opInput.p3, p3, 16);
+//   printf("p3 : %s\n",p3);
+//   strcat(res, opcode);
+//   strcat(res, p2);
+//   strcat(res, p1);
+//   strcat(res, p3);
+//   return binaryToHex(res, opInput);
+//}
 
-   conversionDecimalBinaire(opInput.p1, p1, 5);
-   printf("p1 : %s\n",p1);
-   conversionDecimalBinaire(opInput.p2, p2, 5);
-   printf("p2 : %s\n",p2);
-   conversionDecimalBinaire(opInput.p3, p3, 16);
-   printf("p3 : %s\n",p3);
-   strcat(res, opcode);
-   strcat(res, p2);
-   strcat(res, p1);
-   strcat(res, p3);
-   return binaryToHex(res, opInput);
-}
- */
 
 
 int hexaTranslat(struct assemblerInput *opInputs, int count, struct index *indexs) {
