@@ -3,6 +3,7 @@
 #include "utilsAndConverters.h"
 #include "fileIO.h"
 
+//étape 4 LAPIERRE Jean-Camille CARERRE Scott
 
 int main(int argc, char *argv[])
 {
