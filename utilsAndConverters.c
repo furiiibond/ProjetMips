@@ -47,7 +47,7 @@ int conversionDecimalBinaireInt(int valeur, char res[], int nbBit) {
     }
     res[x] = 0;
     if (neg == 1) {
-        int k = 0;
+        int k = 0;   // inversion des bits
         while (k < nbBit) {
             if (res[k] == '0') {
                 res[k] = '1';

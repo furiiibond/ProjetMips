@@ -18,17 +18,6 @@ struct index {
     int position;
 };
 
-
-#define MEMORY_INPUT_SIZE 16
-// 16 emplacement mémoires avec adresse et valeur en decimales.
-struct memoryInput {
-    int adresse;
-    int value;
-};
-
-#define REGISTER_INPUT_SIZE 32
-// 32 emplacement mémoires avec adresse et valeur en decimales.
-
 int add(struct assemblerInput opInput, char res[]);
 
 int addi(struct assemblerInput opInput, char res[]);
