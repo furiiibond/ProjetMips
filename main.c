@@ -4,6 +4,8 @@
 #include "fileIO.h"
 #include "memory.h"
 #include "registers.h"
+#include "instructionsExecution.h"
+#include <string.h>
 
 //étape 4 LAPIERRE Jean-Camille CARERRE Scott
 
@@ -17,5 +19,7 @@ int main(int argc, char *argv[]) {
     int nbLine = readInput(argv[1], opInputs, indexs);
     hexaTranslat(opInputs, nbLine, indexs);
     writeResults(argv[2], opInputs, nbLine);
+    processInstructions(opInputs, nbLine, indexs, memoryState, registersState);
+    showRegisterStates(registersState);
     return 0;
 }
