@@ -36,7 +36,7 @@ int addExe(struct assemblerInput opInput, struct index *indexs, int currentInstr
     int parameters[3];
     extractParmsValues(opInput, parameters);
     int res = registersState[parameters[1]] + registersState[parameters[2]];
-    registersState[parameters[0]] = res;
+    addInRegister(registersState, parameters[0], res);
     return currentInstructionIndex;
 }
 
@@ -45,7 +45,7 @@ int addiExe(struct assemblerInput opInput, struct index *indexs, int currentInst
     int parameters[3];
     extractParmsValues(opInput, parameters);
     int res = registersState[parameters[1]] + parameters[2];
-    registersState[parameters[0]] = res;
+    addInRegister(registersState, parameters[0], res);
     return currentInstructionIndex;
 }
 
@@ -54,31 +54,70 @@ int andExe(struct assemblerInput opInput, struct index *indexs, int currentInstr
     int parameters[3];
     extractParmsValues(opInput, parameters);
     int res = registersState[parameters[1]] && registersState[parameters[2]];
-    registersState[parameters[0]] = res;
+    addInRegister(registersState, parameters[0], res);
     return currentInstructionIndex;
 }
 
-int
+int beqExe(struct assemblerInput opInput, struct index *indexs, int currentInstructionIndex, int memoryState[],
+           int registersState[]) {
+    int parameters[3];
+    extractParmsValues(opInput, parameters);
+    if (registersState[parameters[0]] == registersState[parameters[1]]) {
+        currentInstructionIndex += parameters[2];
+    }
+    return currentInstructionIndex;
+}
+
+int bgtzExe(struct assemblerInput opInput, struct index *indexs, int currentInstructionIndex, int memoryState[],
+            int registersState[]) {
+    int parameters[3];
+    extractParmsValues(opInput, parameters);
+    if (registersState[parameters[0]] > 0) {
+        currentInstructionIndex += parameters[1];
+    }
+    return currentInstructionIndex;
+}
+
+int blezExe(struct assemblerInput opInput, struct index *indexs, int currentInstructionIndex, int memoryState[],
+            int registersState[]) {
+    int parameters[3];
+    extractParmsValues(opInput, parameters);
+    if (registersState[parameters[0]] <= 0) {
+        currentInstructionIndex += parameters[1];
+    }
+    return currentInstructionIndex;
+}
+
+int bneExe(struct assemblerInput opInput, struct index *indexs, int currentInstructionIndex, int memoryState[],
+           int registersState[]) {
+    int parameters[3];
+    extractParmsValues(opInput, parameters);
+    if (registersState[parameters[0]] != registersState[parameters[1]]) {
+        currentInstructionIndex += parameters[2];
+    }
+    return currentInstructionIndex;
+}
+
 processInstruction(struct assemblerInput opInput, struct index *indexs, int currentInstructionIndex, int memoryState[],
                    int registersState[]) { // return next instruction to execute
-    int res = currentInstructionIndex;
+    int pc = currentInstructionIndex;
     if (strcmp(opInput.opp, "ADD") == 0) {
-        res = addExe(opInput, indexs, currentInstructionIndex, memoryState, registersState);
+        pc = addExe(opInput, indexs, currentInstructionIndex, memoryState, registersState);
     }
 
         // ADDI
     else if (strcmp(opInput.opp, "ADDI") == 0) {
-        res = addiExe(opInput, indexs, currentInstructionIndex, memoryState, registersState);
+        pc = addiExe(opInput, indexs, currentInstructionIndex, memoryState, registersState);
     }
 
         // AND
     else if (strcmp(opInput.opp, "AND") == 0) {
-        res = andExe(opInput, indexs, currentInstructionIndex, memoryState, registersState);
+        pc = andExe(opInput, indexs, currentInstructionIndex, memoryState, registersState);
     }
 
         // BEQ
     else if (strcmp(opInput.opp, "BEQ") == 0) {
-
+        pc = beqExe(opInput, indexs, currentInstructionIndex, memoryState, registersState);
     }
 
         // BGTZ
@@ -196,17 +235,24 @@ processInstruction(struct assemblerInput opInput, struct index *indexs, int curr
 
     } else {
         printf("operande %s inconue de l'executeur\n", opInput.opp);
-        res = currentInstructionIndex;
+        pc = currentInstructionIndex;
     }
-    return res;
+    return pc;
 }
 
 int processInstructions(struct assemblerInput *opInputs, int nbInputs, struct index *indexs, int memoryState[],
-                        int registersState[]) {
-    int i = 0;
-    while (i < nbInputs) {
-        i = processInstruction(opInputs[i], indexs, i, memoryState, registersState);
-        i++;
+                        int registersState[], int iterate) {
+    int pc = 0;
+    while (pc < nbInputs) {
+        if (iterate) {
+            showRegisterStates(registersState);
+            printf("-----------------\n");
+            printf("Instruction suivante %s %s,%s,%s \n", opInputs[pc].opp, opInputs[pc].p1, opInputs[pc].p2,
+                   opInputs[pc].p3);
+            getchar();   // bloquage sur entré utilisateur
+        }
+        pc = processInstruction(opInputs[pc], indexs, pc, memoryState, registersState);
+        pc++; // passage à l'instruction suivante
     }
     return 0;
 }

@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
     int nbLine = readInput(argv[1], opInputs, indexs);
     hexaTranslat(opInputs, nbLine, indexs);
     writeResults(argv[2], opInputs, nbLine);
-    processInstructions(opInputs, nbLine, indexs, memoryState, registersState);
+    processInstructions(opInputs, nbLine, indexs, memoryState, registersState, 0);
     showRegisterStates(registersState);
     return 0;
 }

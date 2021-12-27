@@ -8,6 +8,6 @@
 int showRegisterStates(int registersState[]);
 
 int processInstructions(struct assemblerInput *opInputs, int nbInputs, struct index *indexs, int memoryState[],
-                        int registersState[]);
+                        int registersState[], int iterate);
 
 #endif //MYOWN_INSTRUCTIONSEXECUTION_H
