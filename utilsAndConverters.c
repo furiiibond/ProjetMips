@@ -126,4 +126,5 @@ int indirectWithDecline(char parameter[], char *offset, char *base) {
         tmp[len - 1] = 0;
         strcpy(base, tmp);
     }
+    return 0;
 }

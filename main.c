@@ -7,7 +7,7 @@
 #include "instructionsExecution.h"
 #include <string.h>
 
-//étape 4 LAPIERRE Jean-Camille CARERRE Scott
+//étape 4 LAPIERRE Jean-Camille CARRERE Scott
 
 
 int main(int argc, char *argv[]) {
