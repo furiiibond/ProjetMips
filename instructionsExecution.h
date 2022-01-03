@@ -7,6 +7,8 @@
 
 int showRegisterStates(int registersState[]);
 
+int showMemoryState(int memoryState[]);
+
 int processInstructions(struct assemblerInput *opInputs, int nbInputs, struct index *indexs, int memoryState[],
                         int registersState[], int iterate);
 

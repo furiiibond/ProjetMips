@@ -22,6 +22,15 @@ int showRegisterStates(int registersState[]) {
     return 0;
 }
 
+int showMemoryState(int memoryState[]) {
+    printf("Memory state: \n");
+    for (int i = 0; i < 16; i += 4) {
+        printf("@%08d: %d    @%08d: %d   @%08d: %d     @%08d: %d\n", i * 4, memoryState[i], (i + 1) * 4,
+               memoryState[i + 1], (i + 2) * 4, memoryState[i + 2], (i + 3) * 4, memoryState[i + 3]);
+    }
+    return 0;
+}
+
 int *extractParmsValues(struct assemblerInput opInput, int res[]) {
     processingParameter(opInput.p1);
     processingParameter(opInput.p2);
@@ -210,7 +219,7 @@ int swExe(struct assemblerInput opInput, struct index *indexs, int currentInstru
     processingParameter(base);
     sscanf(offset, "%d", &parameters[1]);
     sscanf(base, "%d", &parameters[2]);
-    addInMemory(memoryState, parameters[1], registersState[parameters[2]]);
+    addInMemory(memoryState, registersState[parameters[2]] + parameters[1], registersState[parameters[0]]);
     return currentInstructionIndex;
 }
 
@@ -224,7 +233,7 @@ int lwExe(struct assemblerInput opInput, struct index *indexs, int currentInstru
     processingParameter(base);
     sscanf(offset, "%d", &parameters[1]);
     sscanf(base, "%d", &parameters[2]);
-    addInRegister(registersState, parameters[2], memoryState[parameters[1]]);
+    addInRegister(registersState, parameters[0], memoryState[registersState[parameters[2]] + parameters[1]]);
     return currentInstructionIndex;
 }
 
@@ -347,10 +356,10 @@ processInstruction(struct assemblerInput opInput, struct index *indexs, int curr
         pc = luiExe(opInput, indexs, currentInstructionIndex, memoryState, registersState);
     }
 
-//        //LW
-//    else if (strcmp(opInput.opp, "LW") == 0) {
-//        pc = lwExe(opInput, indexs, currentInstructionIndex, memoryState, registersState);
-//    }
+        //LW
+    else if (strcmp(opInput.opp, "LW") == 0) {
+        pc = lwExe(opInput, indexs, currentInstructionIndex, memoryState, registersState);
+    }
 
         //MFHI
     else if (strcmp(opInput.opp, "MFHI") == 0) {
@@ -391,12 +400,12 @@ processInstruction(struct assemblerInput opInput, struct index *indexs, int curr
     else if (strcmp(opInput.opp, "SLT") == 0) {
         pc = sltExe(opInput, indexs, currentInstructionIndex, memoryState, registersState);
     }
-//
-//        //SW
-//    else if (strcmp(opInput.opp, "SW") == 0) {
-//        pc = swExe(opInput, indexs, currentInstructionIndex, memoryState, registersState);
-//    }
-//
+
+        //SW
+    else if (strcmp(opInput.opp, "SW") == 0) {
+        pc = swExe(opInput, indexs, currentInstructionIndex, memoryState, registersState);
+    }
+
         //SUB
     else if (strcmp(opInput.opp, "SUB") == 0) {
         pc = subExe(opInput, indexs, currentInstructionIndex, memoryState, registersState);

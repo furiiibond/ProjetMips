@@ -21,5 +21,6 @@ int main(int argc, char *argv[]) {
     writeResults(argv[2], opInputs, nbLine);
     processInstructions(opInputs, nbLine, indexs, memoryState, registersState, 0);
     showRegisterStates(registersState);
+    showMemoryState(memoryState);
     return 0;
 }
