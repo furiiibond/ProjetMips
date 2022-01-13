@@ -19,7 +19,8 @@ int main(int argc, char *argv[]) {
     int nbLine = readInput(argv[1], opInputs, indexs);
     hexaTranslat(opInputs, nbLine, indexs);
     writeResults(argv[2], opInputs, nbLine);
-    processInstructions(opInputs, nbLine, indexs, memoryState, registersState, 0);
+    int stepByStepMode = (strcmp(argv[3], "-i") == 0);
+    processInstructions(opInputs, nbLine, indexs, memoryState, registersState, stepByStepMode);
     showRegisterStates(registersState);
     showMemoryState(memoryState);
     return 0;

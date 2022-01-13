@@ -17,8 +17,9 @@ int showRegisterStates(int registersState[]) {
         printf("R%d: %d    R%d: %d   R%d: %d     R%d: %d\n", i, registersState[i], i + 8, registersState[i + 8], i + 16,
                registersState[i + 16], i + 24, registersState[i + 24]);
     }
-    printf("LO: %d  |  HI: %d  |  RA: %d", registersState[LO_REGISTER], registersState[HI_REGISTER],
+    printf("LO: %d  |  HI: %d  |  RA: %d\n", registersState[LO_REGISTER], registersState[HI_REGISTER],
            registersState[RA_REGISTER]);
+    printf("-----------------\n");
     return 0;
 }
 
@@ -433,9 +434,11 @@ int processInstructions(struct assemblerInput *opInputs, int nbInputs, struct in
     while (pc < nbInputs) {
         if (iterate) {
             showRegisterStates(registersState);
+            showMemoryState(memoryState);
             printf("-----------------\n");
             printf("Instruction suivante %s %s,%s,%s \n", opInputs[pc].opp, opInputs[pc].p1, opInputs[pc].p2,
                    opInputs[pc].p3);
+            printf("press a key\n");
             getchar();   // bloquage sur entré utilisateur
         }
         pc = processInstruction(opInputs[pc], indexs, pc, memoryState, registersState);
