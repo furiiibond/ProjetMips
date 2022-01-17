@@ -9,6 +9,6 @@
 
 int addInMemory(int memoryState[], int index, int value);
 
-int removeFromMemory(int memoryState[], int index);
+int readFromMemory(int memoryState[], int index);
 
 #endif //MYOWN_MEMORY_H

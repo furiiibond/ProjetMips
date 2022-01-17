@@ -8,6 +8,15 @@
 #include "utilsAndConverters.h"
 #include <math.h>
 
+void removeSpaces(char *s) {
+    char *d = s;
+    do {
+        while (*d == ' ') {
+            ++d;
+        }
+    } while (*s++ = *d++);
+}
+
 int processingParameter(char parameter[]) {
     //traitement du parametre
     int count = strlen(parameter);

@@ -7,6 +7,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "fileIO.h"
+#include "registers.h"
 
 int readInput(char *fileName, struct assemblerInput *opInputs, struct index *indexs) {
     int nbLine = 0;
@@ -44,13 +45,15 @@ int readInput(char *fileName, struct assemblerInput *opInputs, struct index *ind
             } else {
                 //operateur
                 if (strcmp(opp, "NOP") != 0 && strcmp(opp, "SYSCALL") != 0) {  // ici les opperateur à 0 opperandes
-                    fscanf(myfile, "%s\n", &currentsParams);
+                    //fscanf(myfile, "%s\n", &currentsParams);
+                    fscanf(myfile, "%[^\n]*c", &currentsParams);
                 }
                 strcpy(opInputs[nbIntruction].opp, opp);
                 printf("op %s\n", opInputs[nbIntruction].opp);
 
                 //récupération des paramètres
                 char delim[] = ",";
+                removeSpaces(currentsParams);     // remove space from parametres
                 char *ptr = strtok(currentsParams, delim);
 
                 if (ptr != NULL) {
@@ -64,9 +67,6 @@ int readInput(char *fileName, struct assemblerInput *opInputs, struct index *ind
                 if (ptr != NULL) {
                     strcpy(opInputs[nbIntruction].p3, ptr);
                 }
-//                printf("p1 %s\n", opInputs[nbIntruction].p1);
-//                printf("p2 %s\n", opInputs[nbIntruction].p2);
-//                printf("p3 %s\n", opInputs[nbIntruction].p3);
                 nbIntruction++;
             }
         }
@@ -90,4 +90,17 @@ int writeResults(char *fileName, struct assemblerInput *opInputs, int nbLine) {
     }
     fclose(myfile);
     return 0;
+}
+
+void writeStateFile(char *fileName, int registerState[]) {
+    FILE *fp;
+    fp = fopen(fileName, "w");
+    if (fp != NULL) {
+        for (int i = 0; i < 32; ++i) {
+            fprintf(fp, "$%02d:%d\n", i, readFromRegister(registerState, i));
+        }
+        fprintf(fp, "HI:%d\n", readFromRegister(registerState, HI_REGISTER));
+        fprintf(fp, "LO:%d\n", readFromRegister(registerState, LO_REGISTER));
+        fclose(fp);
+    }
 }

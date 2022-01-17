@@ -25,8 +25,7 @@ int add(struct assemblerInput opInput, char *res) {
     strcat(res, p1);
     strcat(res, zero);
     strcat(res, opcode);
-    binaryToHex(res, opInput);
-    return 0;
+    return binaryToHex(res, opInput);
 }
 
 int addi(struct assemblerInput opInput, char res[])

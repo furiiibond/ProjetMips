@@ -14,11 +14,13 @@
 int showRegisterStates(int registersState[]) {
     printf("Registers Values: \n");
     for (int i = 0; i < 8; i++) {
-        printf("R%d: %d    R%d: %d   R%d: %d     R%d: %d\n", i, registersState[i], i + 8, registersState[i + 8], i + 16,
-               registersState[i + 16], i + 24, registersState[i + 24]);
+        printf("R%d: %d    R%d: %d   R%d: %d     R%d: %d\n", i, readFromRegister(registersState, i), i + 8,
+               readFromRegister(registersState, i + 8), i + 16,
+               readFromRegister(registersState, i + 16), i + 24, readFromRegister(registersState, i + 24));
     }
-    printf("LO: %d  |  HI: %d  |  RA: %d\n", registersState[LO_REGISTER], registersState[HI_REGISTER],
-           registersState[RA_REGISTER]);
+    printf("LO: %d  |  HI: %d  |  RA: %d\n", readFromRegister(registersState, LO_REGISTER),
+           readFromRegister(registersState, HI_REGISTER),
+           readFromRegister(registersState, RA_REGISTER));
     printf("-----------------\n");
     return 0;
 }
@@ -26,8 +28,9 @@ int showRegisterStates(int registersState[]) {
 int showMemoryState(int memoryState[]) {
     printf("Memory state: \n");
     for (int i = 0; i < 16; i += 4) {
-        printf("@%08d: %d    @%08d: %d   @%08d: %d     @%08d: %d\n", i * 4, memoryState[i], (i + 1) * 4,
-               memoryState[i + 1], (i + 2) * 4, memoryState[i + 2], (i + 3) * 4, memoryState[i + 3]);
+        printf("@%08d: %d    @%08d: %d   @%08d: %d     @%08d: %d\n", i * 4, readFromMemory(memoryState, i), (i + 1) * 4,
+               readFromMemory(memoryState, i + 1), (i + 2) * 4, readFromMemory(memoryState, i + 2), (i + 3) * 4,
+               readFromMemory(memoryState, i + 3));
     }
     return 0;
 }
@@ -47,7 +50,7 @@ int addExe(struct assemblerInput opInput, struct index *indexs, int currentInstr
            int registersState[]) {
     int parameters[3];
     extractParmsValues(opInput, parameters);
-    int res = registersState[parameters[1]] + registersState[parameters[2]];
+    int res = readFromRegister(registersState, parameters[1]) + readFromRegister(registersState, parameters[2]);
     addInRegister(registersState, parameters[0], res);
     return currentInstructionIndex;
 }
@@ -411,13 +414,6 @@ processInstruction(struct assemblerInput opInput, struct index *indexs, int curr
     else if (strcmp(opInput.opp, "SUB") == 0) {
         pc = subExe(opInput, indexs, currentInstructionIndex, memoryState, registersState);
     }
-
-/*        //SYSCALL
-        else if (strcmp(opInput.opp, "SYSCALL") == 0)
-        {
-
-        }*/
-
         //XOR
     else if (strcmp(opInput.opp, "XOR") == 0) {
         pc = xorExe(opInput, indexs, currentInstructionIndex, memoryState, registersState);

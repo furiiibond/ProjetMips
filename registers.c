@@ -14,8 +14,7 @@ int addInRegister(int registersState[], int index, int value) {
     return 0;
 }
 
-int removeFromRegister(int registersState[], int index) {
+int readFromRegister(int registersState[], int index) {
     int res = registersState[index];
-    registersState[index] = 0;
     return res;
 }

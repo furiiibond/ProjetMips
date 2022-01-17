@@ -8,6 +8,8 @@
 #define MAX_INPUT 500
 #define MAX_INDEX 100
 
+void removeSpaces(char *s);
+
 int processingParameter(char parameter[]);
 
 int conversionDecimalBinaireInt(int valeur, char res[], int nbBit);

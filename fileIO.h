@@ -9,4 +9,6 @@ int readInput(char *fileName, struct assemblerInput *opInputs, struct index *ind
 
 int writeResults(char *fileName, struct assemblerInput *opInputs, int nbLine);
 
+void writeStateFile(char *fileInput, int registerState[]);
+
 #endif //MYOWN_FILEIO_H
