@@ -10,6 +10,8 @@
 
 void removeSpaces(char *s);
 
+void upperCase(char *chaine);
+
 int processingParameter(char parameter[]);
 
 int conversionDecimalBinaireInt(int valeur, char res[], int nbBit);

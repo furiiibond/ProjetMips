@@ -10,7 +10,5 @@ int addInMemory(int memoryState[], int index, int value) {
 }
 
 int readFromMemory(int memoryState[], int index) {
-    int res = memoryState[index];
-    memoryState[index] = 0;
-    return res;
+    return memoryState[index];
 }

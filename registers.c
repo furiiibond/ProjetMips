@@ -15,6 +15,5 @@ int addInRegister(int registersState[], int index, int value) {
 }
 
 int readFromRegister(int registersState[], int index) {
-    int res = registersState[index];
-    return res;
+    return registersState[index];
 }

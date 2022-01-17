@@ -16,15 +16,19 @@ int main(int argc, char *argv[]) {
     int memoryState[MEMORY_INPUT_SIZE];  // stands for memory.
     int registersState[REGISTER_INPUT_SIZE];  // stands for registers.
     struct index indexs[MAX_INDEX];
-    int stepByStepMode = (argv[2] != NULL && strcmp(argv[2], "-pas") == 0);
-    int nbLine = readInput(argv[1], opInputs, indexs);
-    hexaTranslat(opInputs, nbLine, indexs);
-    processInstructions(opInputs, nbLine, indexs, memoryState, registersState, stepByStepMode);
-    showRegisterStates(registersState);
-    showMemoryState(memoryState);
-    if (!stepByStepMode) {
-        writeResults(argv[2], opInputs, nbLine);
-        writeStateFile(argv[3], registersState);
+    if (argc == 1) { // no args then interactiveMode
+        processInstructionsInteractiveMode(opInputs, indexs, memoryState, registersState);
+    } else {
+        int stepByStepMode = (argv[2] != NULL && strcmp(argv[2], "-pas") == 0);
+        int nbLine = readInput(argv[1], opInputs, indexs);
+        hexaTranslat(opInputs, nbLine, indexs);
+        processInstructions(opInputs, nbLine, indexs, memoryState, registersState, stepByStepMode);
+        showRegisterStates(registersState);
+        showMemoryState(memoryState);
+        if (!stepByStepMode) {
+            writeResults(argv[2], opInputs, nbLine);
+            writeStateFile(argv[3], registersState);
+        }
     }
     return 0;
 }

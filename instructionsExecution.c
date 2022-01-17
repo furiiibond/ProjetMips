@@ -9,6 +9,7 @@
 #include "utilsAndConverters.h"
 #include "operatorsTranslations.h"
 #include <stdio.h>
+#include <malloc.h>
 #include "instructionsExecution.h"
 
 int showRegisterStates(int registersState[]) {
@@ -59,7 +60,7 @@ int subExe(struct assemblerInput opInput, struct index *indexs, int currentInstr
            int registersState[]) {
     int parameters[3];
     extractParmsValues(opInput, parameters);
-    int res = registersState[parameters[1]] - registersState[parameters[2]];
+    int res = readFromRegister(registersState, parameters[1]) - readFromRegister(registersState, parameters[2]);
     addInRegister(registersState, parameters[0], res);
     return currentInstructionIndex;
 }
@@ -297,6 +298,7 @@ int sltExe(struct assemblerInput opInput, struct index *indexs, int currentInstr
 }
 
 
+int
 processInstruction(struct assemblerInput opInput, struct index *indexs, int currentInstructionIndex, int memoryState[],
                    int registersState[]) { // return next instruction to execute
     int pc = currentInstructionIndex;
@@ -437,6 +439,52 @@ int processInstructions(struct assemblerInput *opInputs, int nbInputs, struct in
             printf("press a key\n");
             getchar();   // bloquage sur entré utilisateur
         }
+        pc = processInstruction(opInputs[pc], indexs, pc, memoryState, registersState);
+        pc++; // passage à l'instruction suivante
+    }
+    return 0;
+}
+
+int processInstructionsInteractiveMode(struct assemblerInput *opInputs, struct index *indexs, int memoryState[],
+                                       int registersState[]) {
+    int pc = 0;
+    int nbIndex = 0;
+    int nbInstructions = 0;
+    while (1) {
+        struct assemblerInput *input = malloc(sizeof(struct assemblerInput));
+        showRegisterStates(registersState);
+        showMemoryState(memoryState);
+        printf("Enter operator\n");
+        char firstInput[100];
+        scanf("%s", firstInput);
+        if (strcmp(firstInput, "EXIT") == 0 || strcmp(firstInput, "exit") == 0) {
+            printf("fin de l'execution");
+            break;
+        }
+        if (pc == (nbInstructions + nbIndex)) { // then ask user for input
+            if (strstr(firstInput, ":")) { // if it's a label
+                struct index *index = malloc(sizeof(struct index));
+                index->position = pc;
+                strcpy(index->name, firstInput);
+                indexs[nbIndex] = *index;
+                nbIndex++;
+            } else {
+                upperCase(firstInput);
+                strcpy(input->opp, firstInput);
+                printf("Enter first parameter\n");
+                scanf("%s", input->p1);
+                printf("Enter second parameter\n");
+                scanf("%s", input->p2);
+                printf("Enter third parameter\n");
+                scanf("%s", input->p3);
+                opInputs[nbInstructions] = *input;
+                nbInstructions++;
+            }
+        }
+        printf("-----------------\n");
+        printf("Instruction %s %s,%s,%s \n", opInputs[pc].opp, opInputs[pc].p1, opInputs[pc].p2,
+               opInputs[pc].p3);
+
         pc = processInstruction(opInputs[pc], indexs, pc, memoryState, registersState);
         pc++; // passage à l'instruction suivante
     }

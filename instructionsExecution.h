@@ -9,6 +9,9 @@ int showRegisterStates(int registersState[]);
 
 int showMemoryState(int memoryState[]);
 
+int processInstructionsInteractiveMode(struct assemblerInput *opInputs, struct index *indexs, int memoryState[],
+                                       int registersState[]);
+
 int processInstructions(struct assemblerInput *opInputs, int nbInputs, struct index *indexs, int memoryState[],
                         int registersState[], int iterate);
 

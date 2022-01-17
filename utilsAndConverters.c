@@ -8,6 +8,14 @@
 #include "utilsAndConverters.h"
 #include <math.h>
 
+void upperCase(char *chaine) {
+    int i = 0;
+    for (i = 0; chaine[i] != '\0'; i++) {
+        if (chaine[i] >= 'a' && chaine[i] <= 'z')
+            chaine[i] -= 'a' - 'A';
+    }
+}
+
 void removeSpaces(char *s) {
     char *d = s;
     do {
