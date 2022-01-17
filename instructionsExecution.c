@@ -69,7 +69,7 @@ int addiExe(struct assemblerInput opInput, struct index *indexs, int currentInst
             int registersState[]) {
     int parameters[3];
     extractParmsValues(opInput, parameters);
-    int res = registersState[parameters[1]] + parameters[2];
+    int res = readFromRegister(registersState, parameters[1]) + parameters[2];
     addInRegister(registersState, parameters[0], res);
     return currentInstructionIndex;
 }
@@ -78,7 +78,7 @@ int andExe(struct assemblerInput opInput, struct index *indexs, int currentInstr
            int registersState[]) {
     int parameters[3];
     extractParmsValues(opInput, parameters);
-    int res = registersState[parameters[1]] && registersState[parameters[2]];
+    int res = readFromRegister(registersState, parameters[1]) && readFromRegister(registersState, parameters[2]);
     addInRegister(registersState, parameters[0], res);
     return currentInstructionIndex;
 }
@@ -87,7 +87,7 @@ int orExe(struct assemblerInput opInput, struct index *indexs, int currentInstru
           int registersState[]) {
     int parameters[3];
     extractParmsValues(opInput, parameters);
-    int res = registersState[parameters[1]] || registersState[parameters[2]];
+    int res = readFromRegister(registersState, parameters[1]) || readFromRegister(registersState, parameters[2]);
     addInRegister(registersState, parameters[0], res);
     return currentInstructionIndex;
 }
@@ -96,7 +96,7 @@ int xorExe(struct assemblerInput opInput, struct index *indexs, int currentInstr
            int registersState[]) {
     int parameters[3];
     extractParmsValues(opInput, parameters);
-    int res = registersState[parameters[1]] ^ registersState[parameters[2]];
+    int res = readFromRegister(registersState, parameters[1]) ^ readFromRegister(registersState, parameters[2]);
     addInRegister(registersState, parameters[0], res);
     return currentInstructionIndex;
 }
@@ -105,7 +105,7 @@ int beqExe(struct assemblerInput opInput, struct index *indexs, int currentInstr
            int registersState[]) {
     int parameters[3];
     extractParmsValues(opInput, parameters);
-    if (registersState[parameters[0]] == registersState[parameters[1]]) {
+    if (readFromRegister(registersState, parameters[0]) == readFromRegister(registersState, parameters[1])) {
         currentInstructionIndex += parameters[2];
     }
     return currentInstructionIndex;
@@ -115,7 +115,7 @@ int bgtzExe(struct assemblerInput opInput, struct index *indexs, int currentInst
             int registersState[]) {
     int parameters[3];
     extractParmsValues(opInput, parameters);
-    if (registersState[parameters[0]] > 0) {
+    if (readFromRegister(registersState, parameters[0]) > 0) {
         currentInstructionIndex += parameters[1];
     }
     return currentInstructionIndex;
@@ -125,7 +125,7 @@ int blezExe(struct assemblerInput opInput, struct index *indexs, int currentInst
             int registersState[]) {
     int parameters[3];
     extractParmsValues(opInput, parameters);
-    if (registersState[parameters[0]] <= 0) {
+    if (readFromRegister(registersState, parameters[0]) <= 0) {
         currentInstructionIndex += parameters[1];
     }
     return currentInstructionIndex;
@@ -135,7 +135,7 @@ int bneExe(struct assemblerInput opInput, struct index *indexs, int currentInstr
            int registersState[]) {
     int parameters[3];
     extractParmsValues(opInput, parameters);
-    if (registersState[parameters[0]] != registersState[parameters[1]]) {
+    if (readFromRegister(registersState, parameters[0]) != readFromRegister(registersState, parameters[1])) {
         currentInstructionIndex += parameters[2];
     }
     return currentInstructionIndex;
@@ -145,8 +145,8 @@ int divExe(struct assemblerInput opInput, struct index *indexs, int currentInstr
            int registersState[]) {
     int parameters[3];
     extractParmsValues(opInput, parameters);
-    int lo = registersState[parameters[0]] / registersState[parameters[1]];
-    int hi = registersState[parameters[0]] % registersState[parameters[1]];
+    int lo = readFromRegister(registersState, parameters[0]) / readFromRegister(registersState, parameters[1]);
+    int hi = readFromRegister(registersState, parameters[0]) % readFromRegister(registersState, parameters[1]);
     addInRegister(registersState, LO_REGISTER, lo);
     addInRegister(registersState, HI_REGISTER, hi);
     return currentInstructionIndex;
@@ -187,7 +187,7 @@ int jrExe(struct assemblerInput opInput, struct index *indexs, int currentInstru
           int registersState[]) {
     int parameters[3];
     extractParmsValues(opInput, parameters);
-    return registersState[parameters[0]];
+    return readFromRegister(registersState, parameters[0]);
 }
 
 int luiExe(struct assemblerInput opInput, struct index *indexs, int currentInstructionIndex, int memoryState[],
@@ -202,7 +202,7 @@ int mfhiExe(struct assemblerInput opInput, struct index *indexs, int currentInst
             int registersState[]) {
     int parameters[3];
     extractParmsValues(opInput, parameters);
-    addInRegister(registersState, parameters[0], registersState[HI_REGISTER]);
+    addInRegister(registersState, parameters[0], readFromRegister(registersState, HI_REGISTER));
     return currentInstructionIndex;
 }
 
@@ -210,7 +210,7 @@ int mfloExe(struct assemblerInput opInput, struct index *indexs, int currentInst
             int registersState[]) {
     int parameters[3];
     extractParmsValues(opInput, parameters);
-    addInRegister(registersState, parameters[0], registersState[LO_REGISTER]);
+    addInRegister(registersState, parameters[0], readFromRegister(registersState, LO_REGISTER));
     return currentInstructionIndex;
 }
 
@@ -224,7 +224,8 @@ int swExe(struct assemblerInput opInput, struct index *indexs, int currentInstru
     processingParameter(base);
     sscanf(offset, "%d", &parameters[1]);
     sscanf(base, "%d", &parameters[2]);
-    addInMemory(memoryState, registersState[parameters[2]] + parameters[1], registersState[parameters[0]]);
+    addInMemory(memoryState, readFromRegister(registersState, parameters[2]) + parameters[1],
+                readFromRegister(registersState, parameters[0]));
     return currentInstructionIndex;
 }
 
@@ -238,7 +239,8 @@ int lwExe(struct assemblerInput opInput, struct index *indexs, int currentInstru
     processingParameter(base);
     sscanf(offset, "%d", &parameters[1]);
     sscanf(base, "%d", &parameters[2]);
-    addInRegister(registersState, parameters[0], memoryState[registersState[parameters[2]] + parameters[1]]);
+    addInRegister(registersState, parameters[0],
+                  memoryState[readFromRegister(registersState, parameters[2]) + parameters[1]]);
     return currentInstructionIndex;
 }
 
@@ -246,7 +248,7 @@ int multExe(struct assemblerInput opInput, struct index *indexs, int currentInst
             int registersState[]) {
     int parameters[3];
     extractParmsValues(opInput, parameters);
-    int res = registersState[parameters[0]] * registersState[parameters[1]];
+    int res = readFromRegister(registersState, parameters[0]) * readFromRegister(registersState, parameters[1]);
     char binaryRes[100];
     char binaryResHi[100];
     conversionDecimalBinaireInt(res, binaryRes, 64);
@@ -261,7 +263,7 @@ int sllExe(struct assemblerInput opInput, struct index *indexs, int currentInstr
            int registersState[]) {
     int parameters[3];
     extractParmsValues(opInput, parameters);
-    int res = registersState[parameters[1]] << parameters[2];
+    int res = readFromRegister(registersState, parameters[1]) << parameters[2];
     addInRegister(registersState, parameters[0], res);
     return currentInstructionIndex;
 }
@@ -270,7 +272,7 @@ int srlExe(struct assemblerInput opInput, struct index *indexs, int currentInstr
            int registersState[]) {
     int parameters[3];
     extractParmsValues(opInput, parameters);
-    int res = registersState[parameters[1]] >> parameters[2];
+    int res = readFromRegister(registersState, parameters[1]) >> parameters[2];
     addInRegister(registersState, parameters[0], res);
     return currentInstructionIndex;
 }
@@ -279,7 +281,7 @@ int rotrExe(struct assemblerInput opInput, struct index *indexs, int currentInst
             int registersState[]) {  // TODO Tester ceci !
     int parameters[3];
     extractParmsValues(opInput, parameters);
-    int valueToRotate = registersState[parameters[1]];
+    int valueToRotate = readFromRegister(registersState, parameters[1]);
     int rotated = (valueToRotate >> parameters[2]) | (valueToRotate << (31 - parameters[2]));
     addInRegister(registersState, parameters[0], rotated);
     return currentInstructionIndex;
@@ -289,7 +291,7 @@ int sltExe(struct assemblerInput opInput, struct index *indexs, int currentInstr
            int registersState[]) {
     int parameters[3];
     extractParmsValues(opInput, parameters);
-    if (registersState[parameters[1]] < registersState[parameters[2]]) {
+    if (readFromRegister(registersState, parameters[1]) < readFromRegister(registersState, parameters[2])) {
         addInRegister(registersState, parameters[0], 1);
     } else {
         addInRegister(registersState, parameters[0], 0);
