@@ -240,7 +240,7 @@ int lwExe(struct assemblerInput opInput, struct index *indexs, int currentInstru
     sscanf(offset, "%d", &parameters[1]);
     sscanf(base, "%d", &parameters[2]);
     addInRegister(registersState, parameters[0],
-                  memoryState[readFromRegister(registersState, parameters[2]) + parameters[1]]);
+                  readFromMemory(memoryState, readFromRegister(registersState, parameters[2]) + parameters[1]));
     return currentInstructionIndex;
 }
 
