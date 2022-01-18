@@ -87,7 +87,7 @@ int writeResults(char *fileName, struct assemblerInput *opInputs, int nbLine) {
     }
 
     for (int i = 0; i < nbLine; i++) {
-        fprintf(myfile, "%X\n", opInputs[i].hexa);
+        fprintf(myfile, "%08x\n", opInputs[i].hexa);
     }
     fclose(myfile);
     return 0;

@@ -90,10 +90,9 @@ int conversionDecimalBinaireMayBeNegative(char parameter[], char *res, int nbBit
     processingParameter(parameter);
     sscanf(parameter, "%d", &valeur);
     if (conversionDecimalBinaireInt(valeur, res, nbBit)) {
-        //nombre négatif on increment l'operande suivente
         int nextOpValue = binaryToDec(nextOp);
         int len = strlen(nextOp);
-        if (nextOpValue == 0) {
+        if (nextOpValue == 0) {  //Decrease in the value of the opperator follow in order to determine the profit
             nextOpValue = (pow(2, len - 1) - 1);
         } else {
             nextOpValue--;

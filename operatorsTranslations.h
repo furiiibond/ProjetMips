@@ -18,8 +18,6 @@ struct index {
     int position;
 };
 
-//int syscall(struct assemblerInput opInput, char res[]);
-
 int hexaTranslat(struct assemblerInput *opInputs, int count, struct index *indexs);
 
 #endif //MYOWN_OPERATORSTRANSLATIONS_H
