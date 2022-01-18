@@ -509,24 +509,6 @@ int xor(struct assemblerInput opInput, char res[]) {
     return binaryToHex(res, opInput);
 }
 
-//int syscall(struct assemblerInput opInput, char res[])
-//{
-//   char opcode[100] = "001100"; //TODO A voir paramètres spéciaux
-//   char p1[100];
-//   char p2[100];
-//   char p3[100];
-//
-//   conversionDecimalBinaire(opInput.p1, p1, 5);
-//   
-//   conversionDecimalBinaire(opInput.p2, p2, 5);
-//   conversionDecimalBinaire(opInput.p3, p3, 16);
-//   strcat(res, opcode);
-//   strcat(res, p2);
-//   strcat(res, p1);
-//   strcat(res, p3);
-//   return binaryToHex(res, opInput);
-//}
-
 
 
 int hexaTranslat(struct assemblerInput *opInputs, int count, struct index *indexs) {
@@ -700,14 +682,6 @@ int hexaTranslat(struct assemblerInput *opInputs, int count, struct index *index
             opInputs[i].hexa = sub(opInputs[i], res);
 
         }
-
-/*        //SYSCALL
-        else if (strcmp(opInputs[i].opp, "SYSCALL") == 0)
-        {
-            char res[100] = "";
-            opInputs[i].hexa = syscall(opInputs[i], res);
-
-        }*/
 
             //XOR
         else if (strcmp(opInputs[i].opp, "XOR") == 0)

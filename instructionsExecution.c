@@ -454,22 +454,26 @@ int processInstructionsInteractiveMode(struct assemblerInput *opInputs, struct i
     int nbInstructions = 0;
     while (1) {
         struct assemblerInput *input = malloc(sizeof(struct assemblerInput));
-        showRegisterStates(registersState);
-        showMemoryState(memoryState);
-        printf("Enter operator\n");
-        char firstInput[100];
-        scanf("%s", firstInput);
-        if (strcmp(firstInput, "EXIT") == 0 || strcmp(firstInput, "exit") == 0) {
-            printf("fin de l'execution");
-            break;
-        }
-        if (pc == (nbInstructions + nbIndex)) { // then ask user for input
+        if (pc == nbInstructions) { // then ask user for input
+            showRegisterStates(registersState);
+            showMemoryState(memoryState);
+            printf("-----------------\n\n");
+            printf("Enter operator or label or 'exit' to stop\n");
+            char firstInput[100] = "";
+            scanf("%s", firstInput);
+            if (strcmp(firstInput, "EXIT") == 0 || strcmp(firstInput, "exit") == 0) {
+                printf("fin de l'execution");
+                free(opInputs);
+                free(indexs);
+                break;
+            }
             if (strstr(firstInput, ":")) { // if it's a label
                 struct index *index = malloc(sizeof(struct index));
                 index->position = pc;
                 strcpy(index->name, firstInput);
                 indexs[nbIndex] = *index;
                 nbIndex++;
+                continue;
             } else {
                 upperCase(firstInput);
                 strcpy(input->opp, firstInput);

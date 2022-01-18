@@ -11,7 +11,6 @@
 
 
 int main(int argc, char *argv[]) {
-    printf("Lecture de %s\n", argv[1]);
     struct assemblerInput opInputs[MAX_INPUT];
     int memoryState[MEMORY_INPUT_SIZE];  // stands for memory.
     int registersState[REGISTER_INPUT_SIZE];  // stands for registers.

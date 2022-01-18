@@ -10,10 +10,16 @@
 #include "registers.h"
 
 int addInRegister(int registersState[], int index, int value) {
-    registersState[index] = value;
-    return 0;
+    if (index < REGISTER_INPUT_SIZE) {
+        registersState[index] = value;
+        return 0;
+    }
+    return 1;
 }
 
 int readFromRegister(int registersState[], int index) {
-    return registersState[index];
+    if (index < REGISTER_INPUT_SIZE) {
+        return registersState[index];
+    }
+    return -1;
 }
